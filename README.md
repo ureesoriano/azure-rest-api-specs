@@ -2,25 +2,23 @@
 
 # Azure REST API Specifications
 
-## Code of Conduct
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
 ## Description
 
 This repository is the canonical source for REST API specifications for Microsoft Azure.
 
-## Creating the Swagger Specification for Azure
-- This [document](./documentation/creating-swagger.md) will help you understand how AutoRest converts Swagger in to code.
-- If you are using **swashbuckle** to generate a swagger spec from your .NET WEB API then please take a look at this [repo]( https://github.com/Azure/swashbuckle-resource-provider).
-- Swagger spec for every api-version should be in a separate folder named with the api-version.
-  - It is time consuming to review the file line by line for every api-version. When you are creating the swagger spec for the new api-version, please copy the swagger spec from the previous version in to the new api-versioned folder and commit it. After that overwrite it with the changes for the new api-version. This makes it easy for us to review the changes.
+## Basics
+If you're a spec author looking for information about all of of the repositories and steps in the pipeline, go to the [adx-documentation-pr](https://github.com/Azure/adx-documentation-pr) repository. Make sure to [join the Github Azure organization](http://aka.ms/azuregithub) to get access to that repo.
+
+## Getting started
+- Our [Contribution guidelines](./.github/CONTRIBUTING.md) walks you through the process of contributing to this repository.
+- The [/documentation](./documentation/) folder contains reference documentation for all aspects of Swagger and our recommended patterns. Start with the [Creating Swagger](./documentation/creating-swagger.md) page.
 
 ## Directory Structure
 
 The structure of the directory should strictly follow these rules:
-- The top level folder must be the service name
+- If the Rest end point is for management plane(going through ARM end point) then the top level folder must be the "arm-<service_name>". Else top folder name must be "<service_name>".
 - The second level must be the API versions
-- The third level must be the format of the specification
+- The third level must be the format of the specification (ex. swagger)
 - The fourth level must be the specifications
 
 The structure should appear like so:
@@ -59,32 +57,64 @@ The structure should appear like so:
 └── readme.md
 ```
 
-At this point, the specifications are expected to be in swagger format
+## New Directory structure (effective July 10th 2017)
 
-## How to validate your swagger
-* [You can use this json schema validator](https://json-schema-validator.herokuapp.com/)
-  * In the upper left box, paste the [swagger schema from here](https://github.com/swagger-api/swagger-spec/blob/master/schemas/v2.0/schema.json)
-  * In the lower left box, paste your swagger json
-  * Upon clicking the validate button, you should either see errors or success.
+Re-organization is being done to support upcoming profiles work and Data Plane swagger specs. The new structure will appear like below
+ 
+```bash
+.
 
-## Generating Code from Specifications
+Specification
+└──
+   ├──automation
+   |   └── resource-manager
+   |       └── Microsoft.Automation
+   |           └── 2015-10-31
+   |               └── examples
+   ├──batch
+   |   └── data-plane
+   |   |   └── Microsoft.Batch
+   |   |       └── 2015-12-01.2.2
+   |   |       └── 2016-02-01.3.0
+   |   |       └── 2016-07-01.3.1
+   |   |       └── 2017-01-01.4.0
+   |   |       |   └── examples
+   |   |       └── 2017-05-01.5.0
+   |   └── resource-manager
+   |       └── Microsoft.Batch
+   |           └──2015-12-01
+   |           └──2017-01-01
+   |           |   └──examples
+   |           └──2017-05-01
+   |               └──examples
+   └── billing
+   |   └── resource-manager
+   |       └── Microsoft.Billing
+   |           └── 2017-02-27-preview
+   |           |   └── examples
+   |           └── 2017-04-24-preview
+   |               └── examples
+   └── readme.md
+```
+### Changing the representation of composite swagger metadata
 
-If you are interested in generating code from these specifications, please check out [AutoRest](https://github.com/azure/autorest). There you will find the code generator as well as instructions on how to use it.
+Currently composite swagger metadata is captured in a .json file. The problem with the current representation is that it does not provide a way to track what versions of swagger specs were used in earlier releases. With the upcoming changes, we will be able to keep track of multiple versions of composition. The metadata will be captured in readme.md file under resource-manager folder. There won’t be a need for .json file. New structure in readme.md file looks like below. 
+Tag: package-2017-03
+These settings apply only when --tag=package-2017-03 is specified on the command line.
+input-file:
+- Microsoft.Compute/2017-03-30/compute.json
+- Microsoft.Compute/2017-03-30/disk.json
+- Microsoft.Compute/2017-03-30/runCommands.json
+- Microsoft.ContainerService/2017-01-31/containerService.json
 
-## How to Contribute
+Please take a look at this [readme.md](https://github.com/Azure/azure-rest-api-specs/tree/reorg/specification/compute/resource-manager) (Acessible by Azure github org members only) to understand how the complete structure looks like.
 
-Please contribute to services you know and love. The curation of these specifications will ensure that we have great documentation and even better client library support for our Azure Services. If you have any questions, please reach out to the autoresteng dl.
 
-### Submitting changes
+## Specs Format
+Currently, the specifications are expected to be in Swagger JSON format
 
-Please send a [GitHub Pull Request to Azure REST API Specs](https://github.com/azure/azure-rest-api-specs/pull/new/master) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)). When you send a pull request, we will love you forever if you include additions to the documentation for your given service. We can always use more documentation and beautiful markdown. Please follow make sure all of your commits are atomic (one feature per commit).
+## Next steps
+The next step in the process after a spec is completed is to generate SDKs and API reference documentation. Go to the [Azure Developer Experience guide](https://github.com/Azure/adx-documentation-pr) for more information.
 
-Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:
-
-    $ git commit -m "A brief summary of the commit
-    >
-    > A paragraph describing what changed and its impact."
-    
-Please be kind with your pull requests and ensure you keeping them as focused and cohesive as possible. Keep your pull
-request free of merge commits, code review fixes and anything that may take away from the essence of your contribution.
-Use the git tools you have available to you, such as amend, rebase, etc.
+---
+_This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments._

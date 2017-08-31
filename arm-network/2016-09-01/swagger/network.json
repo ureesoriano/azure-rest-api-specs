@@ -8126,6 +8126,8 @@
       },
       "description": "Response for CheckIPAddressAvailability Api service call"
     },
+  },
+  "definitions": {
     "ErrorDetails": {
       "properties": {
         "code": {
@@ -8165,7 +8167,7 @@
       "properties": {
         "status": {
           "type": "string",
-          "description": "Status of the AzureAsuncOperation",
+          "description": "Status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'.",
           "enum": [
             "InProgress",
             "Succeeded",
@@ -8186,28 +8188,28 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Resource Id"
+          "description": "Resource ID."
         },
         "name": {
           "readOnly": true,
           "type": "string",
-          "description": "Resource name"
+          "description": "Resource name."
         },
         "type": {
           "readOnly": true,
           "type": "string",
-          "description": "Resource type"
+          "description": "Resource type."
         },
         "location": {
           "type": "string",
-          "description": "Resource location"
+          "description": "Resource location."
         },
         "tags": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "description": "Resource tags"
+          "description": "Resource tags."
         }
       },
       "x-ms-azure-resource": true
@@ -8216,7 +8218,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Resource Id"
+          "description": "Resource ID."
         }
       },
       "x-ms-azure-resource": true
@@ -8228,7 +8230,7 @@
       "in": "path",
       "required": true,
       "type": "string",
-      "description": "Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call."
+      "description": "The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of the URI for every service call."
     },
     "ApiVersionParameter": {
       "name": "api-version",
